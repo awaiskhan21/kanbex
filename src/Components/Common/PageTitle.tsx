@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import React, { useEffect, useRef } from 'react'
 
-import { GoBack } from '../../Utils/utils'
+import { goBack } from '../../Utils/utils'
 
 import Breadcrumbs from './BreadCrumbs'
 import PageHeadTitle from './PageHeadTitle'
@@ -43,7 +43,7 @@ export default function PageTitle(props: PageTitleProps) {
     }
   }, [divRef, focusOnLoad])
 
-  const onBackButtonClick = () => GoBack((backButtonCB && backButtonCB()) || backUrl)
+  const onBackButtonClick = () => goBack((backButtonCB && backButtonCB()) || backUrl)
 
   return (
     <div ref={divRef} className={`mb-4 pt-4 ${className}`}>

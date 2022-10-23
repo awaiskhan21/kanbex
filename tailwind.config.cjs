@@ -1,12 +1,21 @@
-/** @type {import('tailwindcss').Config} */
+import colors from 'tailwindcss/colors.js'
+import defaultTheme from 'tailwindcss/defaultTheme.js'
+import formsPlugin from '@tailwindcss/forms'
+import aspectRatio from '@tailwindcss/aspect-ratio'
+import typography from '@tailwindcss/typography'
 
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./*.html', './src/**/*.{js,ts,jsx,tsx,css}'],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        error: colors.red['500']
+      }
+    },
     fontFamily: {
-      sans: ['CascadiaCodePL', 'system-ui']
+      sans: ['Inter', 'sans-serif', ...defaultTheme.fontFamily.sans]
     }
   },
-  plugins: []
+  plugins: [formsPlugin, aspectRatio, typography]
 }

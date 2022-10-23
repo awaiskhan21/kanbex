@@ -9,6 +9,8 @@ import viteImagemin from 'vite-plugin-imagemin'
 import config from './config.js'
 import postcss from './postcss.config.js'
 
+const isHttps = process.env.HTTPS ?? false
+
 const { imagemin } = config
 
 // https://vitejs.dev/config/
@@ -42,8 +44,16 @@ export default defineConfig({
   resolve: {
     alias: [
       { find: '@/', replacement: '/src' },
-      { find: '@/Assets', replacement: '/src/assets' },
-      { find: '@/Components', replacement: '/src/components' }
+      { find: '@/Assets', replacement: '/src/assets' }
     ]
+  },
+  server: {
+    https: !!isHttps,
+    proxy: {
+      '/api/': {
+        target: 'http://localhost:9000',
+        changeOrigin: true
+      }
+    }
   }
 })

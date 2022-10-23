@@ -1,7 +1,7 @@
-import React from 'react'
 import { Grid } from '@mui/material'
 
-const img = 'https://jugaad.ecellvnit.org/img/jugaadnew.png'
+import kanbex from '@/Assets/images/kanbex.png'
+
 const Loading = () => {
   return (
     <Grid container>
@@ -9,7 +9,7 @@ const Loading = () => {
         <Grid container alignItems="center" justifyContent="center">
           <div className="app">
             <header className="app-header">
-              <img alt="logo" className="app-logo" src={img} />
+              <img alt="logo" className="app-logo" src={kanbex} />
             </header>
           </div>
         </Grid>

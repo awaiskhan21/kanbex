@@ -1,0 +1,183 @@
+@import '@pnotify/core/dist/PNotify.css';
+@import '@pnotify/mobile/dist/PNotifyMobile.css';
+@import '@pnotify/core/dist/BrightTheme.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.badge {
+  display: inline-block;
+  padding: 0.25em 0.4em;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25rem;
+  transition: color 0.15s;
+}
+
+.badge-pill {
+  padding-right: 0.6em;
+  padding-left: 0.6em;
+  border-radius: 10rem;
+}
+
+.badge-zinc {
+  color: #fff;
+  background-color: #007bff;
+}
+
+.badge-secondary {
+  color: #fff;
+  background-color: #6c757d;
+}
+
+.badge-success {
+  color: #fff;
+  background-color: #28a745;
+}
+
+.badge-warning {
+  color: #212529;
+  background-color: #ffc107;
+}
+
+.badge-danger {
+  color: #fff;
+  background-color: #dc3545;
+}
+
+.badge-dark {
+  color: #fff;
+  background-color: #343a40;
+}
+
+label {
+  @apply block text-sm font-medium text-gray-700;
+}
+
+.app {
+  text-align: center;
+}
+
+.app-logo {
+  height: 10vmin;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .app-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.app-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+@keyframes app-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.button {
+  @apply font-medium h-min flex items-center justify-center gap-2 transition-all duration-200 ease-in-out cursor-pointer disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-500;
+}
+
+.button-zinc-default {
+  @apply accent-zinc-500 bg-zinc-500 hover:bg-zinc-400 text-white;
+}
+
+.button-zinc-ghost {
+  @apply accent-zinc-500 hover:bg-zinc-100 text-zinc-500 border-0;
+}
+
+.button-secondary-default {
+  @apply accent-gray-200 bg-gray-100 hover:bg-gray-200 text-gray-700;
+}
+
+.button-secondary-ghost {
+  @apply accent-gray-200 hover:bg-gray-200 text-gray-700 border-0;
+}
+
+.button-danger-default {
+  @apply accent-red-500 bg-red-500 hover:bg-red-400 text-white;
+}
+
+.button-danger-ghost {
+  @apply accent-red-500 hover:bg-red-100 text-red-500 border-0;
+}
+
+.button-warning-default {
+  @apply accent-yellow-500 bg-yellow-500 hover:bg-yellow-400 text-white;
+}
+
+.button-warning-ghost {
+  @apply accent-yellow-500 hover:bg-yellow-100 text-yellow-500 border-0;
+}
+
+.button-alert-default {
+  @apply accent-violet-600 bg-violet-600 hover:bg-violet-500 text-white;
+}
+
+.button-alert-ghost {
+  @apply accent-violet-600 hover:bg-violet-100 text-violet-600 border-0;
+}
+
+.button-shape-square {
+  @apply rounded;
+}
+
+.button-shape-circle {
+  @apply rounded-full p-2 !important;
+}
+
+.button-size-small {
+  @apply px-2 py-1 text-xs;
+}
+
+.button-size-default {
+  @apply py-2 px-4 text-sm;
+}
+
+.button-size-large {
+  @apply py-3 px-5 text-base;
+}
+
+.field-label {
+  @apply mb-2 block text-gray-900 text-base font-normal;
+}
+
+.field-error {
+  @apply font-medium tracking-wide text-red-500 text-xs mt-2 ml-1;
+}
+
+.form-input,
+.form-textarea {
+  @apply text-sm block py-3 px-4 w-full rounded placeholder:text-gray-500 focus:bg-white border-2 focus:border-zinc-400 outline-none ring-0 transition-all duration-200 ease-in-out !important;
+}
+
+.form-textarea {
+  @apply resize-none !important;
+}
+
+input {
+  @apply border-gray-300 rounded-md shadow-sm focus:ring-zinc-900 focus:border-zinc-500 transition-colors duration-300 !important;
+}
+
+input:disabled,
+.disabled {
+  @apply cursor-not-allowed bg-gray-200 border-gray-400 text-gray-700;
+}
