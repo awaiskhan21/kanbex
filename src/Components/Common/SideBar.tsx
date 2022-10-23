@@ -9,8 +9,8 @@ import { useSelector } from 'react-redux'
 import { PREFERENCE_SIDEBAR_KEY, SIDEBAR } from '../../Common/constants'
 import useWindowDimensions from '../../Common/hooks/useWindowDimensions'
 
-const LOGO = 'https://jugaad.ecellvnit.org/img/jugaadnew.png'
-const LOGO_COLLAPSE = 'https://jugaad.ecellvnit.org/img/jugaadnew.png'
+import logo from '@/Assets/images/logo.jpg'
+import kanbex from '@/Assets/images/kanbex.png'
 
 const menus = [
   {
@@ -95,7 +95,7 @@ export const SideBar: React.FC<SideBarProps> = ({ isOpen, setIsOpen }) => {
   return (
     <Drawer
       PaperProps={{
-        className: 'bg-primary-500'
+        className: 'bg-zinc-500'
       }}
       anchor="left"
       className={clsx('transition-all duration-300', expanded ? 'w-64' : 'w-14')}
@@ -107,7 +107,7 @@ export const SideBar: React.FC<SideBarProps> = ({ isOpen, setIsOpen }) => {
     >
       <div
         className={clsx(
-          'bg-primary-400 flex h-full flex-col overflow-hidden transition-all duration-300',
+          'flex h-full flex-col overflow-hidden bg-zinc-800 transition-all duration-300',
           expanded ? 'w-64' : 'w-14'
         )}
       >
@@ -116,7 +116,7 @@ export const SideBar: React.FC<SideBarProps> = ({ isOpen, setIsOpen }) => {
             <img
               alt="jugaad logo"
               className="m-2 h-auto w-auto p-2 transition"
-              src={expanded ? LOGO : LOGO_COLLAPSE}
+              src={expanded ? kanbex : logo}
             />
           </Link>
           <IconButton
@@ -133,10 +133,10 @@ export const SideBar: React.FC<SideBarProps> = ({ isOpen, setIsOpen }) => {
               <Link
                 key={item.title}
                 className={clsx(
-                  'hover:bg-primary-500 my-1 flex w-10 items-center justify-items-start overflow-hidden rounded py-1 transition-all duration-300 hover:text-white',
+                  'my-1 flex w-10 items-center justify-items-start overflow-hidden rounded py-1 transition-all duration-300 hover:bg-zinc-500 hover:text-white',
                   active === item.link.replaceAll('/', '')
-                    ? 'bg-primary-400 text-gray-700 hover:bg-gray-900'
-                    : 'bg-primary-400 text-gray-700',
+                    ? 'bg-zinc-400 text-gray-700 hover:bg-gray-900'
+                    : 'bg-zinc-400 text-gray-700',
                   expanded && 'w-60'
                 )}
                 href={item.link}
@@ -162,7 +162,7 @@ export const SideBar: React.FC<SideBarProps> = ({ isOpen, setIsOpen }) => {
 
         <div
           className={clsx(
-            'flex-no-wrap ml-2 flex items-center overflow-hidden py-4 transition-all duration-300',
+            'ml-2 flex flex-nowrap items-center overflow-hidden py-4 transition-all duration-300',
             expanded ? 'w-60' : 'w-10'
           )}
         >
@@ -171,7 +171,7 @@ export const SideBar: React.FC<SideBarProps> = ({ isOpen, setIsOpen }) => {
               className="flex h-8 w-8 items-center justify-center rounded-full bg-white"
               href="/user/profile"
             >
-              <i className="fas fa-user text-primary-900 block text-base" />
+              <i className="fas fa-user block text-base text-zinc-900" />
             </Link>
           </div>
           <div className="ml-3 overflow-hidden whitespace-nowrap">
@@ -182,7 +182,7 @@ export const SideBar: React.FC<SideBarProps> = ({ isOpen, setIsOpen }) => {
               {loginUser}
             </Link>
             <p
-              className="group-hover:text-primary-100 cursor-pointer text-sm font-medium leading-4 text-gray-900 transition duration-150 ease-in-out"
+              className="cursor-pointer text-sm font-medium leading-4 text-gray-900 transition duration-150 ease-in-out group-hover:text-zinc-100"
               onClick={handleSignOut}
             >
               Sign Out

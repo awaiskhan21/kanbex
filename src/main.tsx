@@ -1,18 +1,20 @@
-import './global.css'
+import './style/global.css'
 import 'virtual:fonts.css'
 
 import React from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { configureStore } from '@reduxjs/toolkit'
+import { Provider } from 'react-redux'
 
-import App from './components/App'
+import reducer from './Redux/Reducer'
+import App from './Components/App'
+
+const store = configureStore({ reducer })
 
 createRoot(document.getElementById('root') as Element).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route element={<App />} path="/" />
-      </Routes>
-    </BrowserRouter>
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>
 )
