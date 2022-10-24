@@ -3,17 +3,17 @@ import { useState } from 'react'
 
 import { SideBar } from '../Components/Common/SideBar'
 import Error404 from '../Components/ErrorPages/404'
-import { Home } from '../Components/Home'
+import { Boards } from '../Components/Board'
 
 import kanbex from '@/Assets/images/kanbex.png'
 
 const routes = {
-  '/': () => <Home />,
-  '/home': () => <Home />
+  '/': () => <Boards />,
+  '/boards': () => <Boards />
 }
 
 export default function AppRouter() {
-  useRedirect('/', '/home')
+  useRedirect('/', '/boards')
   useRedirect('/user', '/users')
   const pages = useRoutes(routes) || <Error404 />
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -38,13 +38,13 @@ export default function AppRouter() {
               />
             </svg>
           </button>
-          <a className="flex h-full w-full items-center px-4 md:hidden" href="/">
-            <img alt="kanbex logo" className="-mx-4 h-full w-1/4" src={kanbex} />
+          <a className="flex h-full w-full items-center bg-zinc-800 px-4 md:hidden" href="/">
+            <img alt="kanbex logo" className="mx-4 h-1/2 w-1/4" src={kanbex} />
           </a>
         </div>
 
         <main className="flex-1 overflow-y-scroll pb-4 focus:outline-none md:py-0" id="pages">
-          <div className="mx-auto max-w-7xl p-3">{pages}</div>
+          <div className="mx-auto max-w-[1408px] p-3">{pages}</div>
         </main>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react'
+import React from 'react'
 import { TextFieldProps } from '@mui/material'
 import debounce from 'lodash/debounce'
 
@@ -9,8 +9,8 @@ type TextFieldPropsExtended = TextFieldProps & {
 }
 export const InputSearchBox = (props: TextFieldPropsExtended) => {
   const { search, placeholder, value } = props
-  const [searchValue, setSearchValue] = useState(value)
-  const handler = useCallback(debounce(search, 1200), [search])
+  const [searchValue, setSearchValue] = React.useState(value)
+  const handler = React.useCallback(debounce(search, 1200), [search])
   const handleKeyDown = (event: any) => {
     const { value } = event.target
 
@@ -20,9 +20,10 @@ export const InputSearchBox = (props: TextFieldPropsExtended) => {
     }
   }
 
-  useEffect(() => {
+  React.useEffect(() => {
     setSearchValue(value)
   }, [value])
+
   const clearSearch = () => {
     handler('')
     setSearchValue('')
@@ -48,13 +49,13 @@ export const InputSearchBox = (props: TextFieldPropsExtended) => {
             onClick={clearSearch}
           >
             <span className="text-gray-500 sm:text-sm sm:leading-5">
-              <i className="fas fa-times text-md " />
+              <i className="fas fa-times text-base " />
             </span>
           </div>
         ) : (
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
             <span className="text-gray-500 sm:text-sm sm:leading-5">
-              <i className="fas fa-search text-md " />
+              <i className="fas fa-search text-base " />
             </span>
           </div>
         )}

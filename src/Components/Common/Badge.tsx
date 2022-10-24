@@ -18,14 +18,14 @@ export function Badge(props: Props) {
     >
       {props.startIcon && (
         <i
-          className={`text-md text-${props.color}-500 fas fa-${props.startIcon}`}
+          className={`text-base text-${props.color}-500 fas fa-${props.startIcon}`}
           onClick={props.onEndIconClick}
         />
       )}
       {props.text}
       {props.endIcon && (
         <i
-          className={`text-md text-${props.color}-500 fas fa-${props.endIcon}`}
+          className={`text-base text-${props.color}-500 fas fa-${props.endIcon}`}
           onClick={props.onEndIconClick}
         />
       )}

@@ -14,24 +14,14 @@ import kanbex from '@/Assets/images/kanbex.png'
 
 const menus = [
   {
-    icon: 'fas fa-home',
-    link: '/home',
-    title: 'Home'
-  },
-  {
-    icon: 'fas fa-money-bill',
-    link: '/activities',
-    title: 'Activities'
-  },
-  {
-    icon: 'fas fa-id-card',
-    link: '/stucreds',
-    title: 'StuCred Regsitration'
+    icon: 'fab fa-flipboard',
+    link: '/boards',
+    title: 'Boards'
   },
   {
     icon: 'fas fa-history',
-    link: '/recent',
-    title: 'Recent'
+    link: '/task',
+    title: 'Task'
   }
 ]
 
@@ -65,8 +55,9 @@ export const SideBar: React.FC<SideBarProps> = ({ isOpen, setIsOpen }) => {
   )
   const [expanded, setExpanded] = useState(!enableCollapse)
   const handleSignOut = () => {
-    localStorage.removeItem('jugaad_access_token')
-    localStorage.removeItem('jugaad_refresh_token')
+    localStorage.removeItem('kanbex_access_token')
+    localStorage.removeItem('kanbex_refresh_token')
+    localStorage.removeItem('preferenceSidebar')
     navigate('/')
     window.location.reload()
   }
@@ -114,7 +105,7 @@ export const SideBar: React.FC<SideBarProps> = ({ isOpen, setIsOpen }) => {
         <div className="flex items-center justify-between">
           <Link className="block w-28 shrink-0" href="/">
             <img
-              alt="jugaad logo"
+              alt="kanbex logo"
               className="m-2 h-auto w-auto p-2 transition"
               src={expanded ? kanbex : logo}
             />
@@ -124,7 +115,7 @@ export const SideBar: React.FC<SideBarProps> = ({ isOpen, setIsOpen }) => {
             className="fill-current px-4 text-white md:hidden"
             onClick={() => setIsOpen(false)}
           >
-            <Close color="inherit" />
+            <Close style={{ color: '#fff' }} />
           </IconButton>
         </div>
         <nav className="flex-1 overflow-x-hidden px-2">
@@ -135,8 +126,8 @@ export const SideBar: React.FC<SideBarProps> = ({ isOpen, setIsOpen }) => {
                 className={clsx(
                   'my-1 flex w-10 items-center justify-items-start overflow-hidden rounded py-1 transition-all duration-300 hover:bg-zinc-500 hover:text-white',
                   active === item.link.replaceAll('/', '')
-                    ? 'bg-zinc-400 text-gray-700 hover:bg-gray-900'
-                    : 'bg-zinc-400 text-gray-700',
+                    ? 'text-zinc-300 hover:bg-gray-900'
+                    : 'text-zinc-400',
                   expanded && 'w-60'
                 )}
                 href={item.link}
@@ -175,14 +166,11 @@ export const SideBar: React.FC<SideBarProps> = ({ isOpen, setIsOpen }) => {
             </Link>
           </div>
           <div className="ml-3 overflow-hidden whitespace-nowrap">
-            <Link
-              className="mb-1 text-base font-medium leading-5 text-gray-800"
-              href="/user/profile"
-            >
+            <Link className="mb-1 text-base font-medium leading-5 text-white" href="/user/profile">
               {loginUser}
             </Link>
             <p
-              className="cursor-pointer text-sm font-medium leading-4 text-gray-900 transition duration-150 ease-in-out group-hover:text-zinc-100"
+              className="cursor-pointer text-sm font-medium leading-4 text-white transition duration-150 ease-in-out group-hover:text-zinc-100"
               onClick={handleSignOut}
             >
               Sign Out

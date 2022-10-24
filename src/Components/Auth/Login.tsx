@@ -81,7 +81,7 @@ export const Login = () => {
             localStorage.setItem('kanbex_refresh_token', res.refresh)
 
             if (window.location.pathname === '/' || window.location.pathname === '/login') {
-              navigate('/home')
+              navigate('/boards')
             } else {
               navigate(window.location.pathname.toString())
             }

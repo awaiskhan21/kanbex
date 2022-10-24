@@ -28,54 +28,68 @@ export const updateUserDetails = (username: string, data: object) => {
   return fireRequest('updateUserDetails', [username], data)
 }
 
-// Team
+// Boards
 
-export const getUserTeam = (pathParam: object) => {
-  return fireRequest('userTeam', [], {}, pathParam)
+export const getBoards = (params: object) => {
+  return fireRequest('getBoards', [], params)
 }
 
-// Activities
-
-export const getActivites = (params: object) => {
-  return fireRequest('getActivities', [], params)
+export const getBoard = (external_id: string) => {
+  return fireRequest('getBoard', [], {}, { external_id })
 }
 
-export const getStuCreds = (params: object) => {
-  return fireRequest('getStuCreds', [], params)
+export const createBoard = (params: object) => {
+  return fireRequest('createBoard', [], params)
 }
 
-export const getActivity = (external_id: string, key?: string) => {
-  return fireRequest('getActivity', [], {}, { external_id }, key)
+export const updateBoard = (params: object, external_id: string) => {
+  return fireRequest('updateBoard', [], params, { external_id })
 }
 
-export const createActivity = (params: object) => {
-  return fireRequest('createActivity', [], params)
+export const deleteBoard = (external_id: string) => {
+  return fireRequest('deleteBoard', [], {}, { external_id })
 }
 
-export const updateActivity = (params: object, external_id: string) => {
-  return fireRequest('updateActivity', [], params, {
-    external_id
-  })
+// Stages
+
+export const getStages = (params: object) => {
+  return fireRequest('getStages', [], params)
 }
 
-export const deleteActivity = (external_id: string) => {
-  return fireRequest('deleteActivity', [], {}, { external_id })
+export const getStage = (external_id: string) => {
+  return fireRequest('getStage', [], {}, { external_id })
 }
 
-export const getStuCred = (external_id: string, key?: string) => {
-  return fireRequest('getStuCred', [], {}, { external_id }, key)
+export const createStage = (params: object) => {
+  return fireRequest('createStage', [], params)
 }
 
-export const createStuCred = (params: object) => {
-  return fireRequest('createStuCred', [], params)
+export const updateStage = (params: object, external_id: string) => {
+  return fireRequest('updateStage', [], params, { external_id })
 }
 
-export const updateStuCred = (params: object, external_id: string) => {
-  return fireRequest('updateStuCred', [], params, {
-    external_id
-  })
+export const deleteStage = (external_id: string) => {
+  return fireRequest('deleteStage', [], {}, { external_id })
 }
 
-export const deleteStuCred = (external_id: string) => {
-  return fireRequest('deleteStuCred', [], {}, { external_id })
+// Tasks
+
+export const getTasks = (params: object) => {
+  return fireRequest('getTasks', [], params)
+}
+
+export const getTask = (external_id: string) => {
+  return fireRequest('getTask', [], {}, { external_id })
+}
+
+export const createTask = (params: object) => {
+  return fireRequest('createTask', [], params)
+}
+
+export const updateTask = (params: object, external_id: string) => {
+  return fireRequest('updateTask', [], params, { external_id })
+}
+
+export const deleteTask = (external_id: string) => {
+  return fireRequest('deleteTask', [], {}, { external_id })
 }
