@@ -6,7 +6,6 @@
   },
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "npm run reset:vite && tsc && vite build",
@@ -48,6 +47,7 @@
     "@commitlint/cli": "^17.0.3",
     "@commitlint/config-conventional": "^17.0.3",
     "@headlessui/react": "^1.7.3",
+    "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/typography": "^0.5.7",
@@ -76,6 +76,7 @@
     "lint-staged": "^13.0.3",
     "postcss": "^8.4.14",
     "prettier": "2.7.1",
+    "redux-devtools-extension": "^2.13.9",
     "rimraf": "^3.0.2",
     "stylelint": "^14.9.1",
     "stylelint-config-html": "^1.1.0",

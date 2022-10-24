@@ -5,6 +5,7 @@ import { defineConfig } from 'vite'
 import { VitePluginFonts } from 'vite-plugin-fonts'
 import { createHtmlPlugin } from 'vite-plugin-html'
 import viteImagemin from 'vite-plugin-imagemin'
+import { esbuildCommonjs, viteCommonjs } from '@originjs/vite-plugin-commonjs'
 
 import config from './config.js'
 import postcss from './postcss.config.js'
@@ -17,6 +18,7 @@ const { imagemin } = config
 export default defineConfig({
   plugins: [
     react(),
+    viteCommonjs(),
     viteImagemin(imagemin),
     createHtmlPlugin({
       minify: true,
@@ -41,6 +43,19 @@ export default defineConfig({
   css: {
     postcss
   },
+  optimizeDeps: {
+    esbuildOptions: {
+      plugins: [
+        esbuildCommonjs([
+          'tailwindcss/colors',
+          'tailwindcss/defaultTheme',
+          '@tailwindcss/forms',
+          '@tailwindcss/aspect-ratio',
+          '@tailwindcss/typography'
+        ])
+      ]
+    }
+  },
   resolve: {
     alias: [
       { find: '@/', replacement: '/src' },
@@ -52,6 +67,7 @@ export default defineConfig({
     proxy: {
       '/api/': {
         target: 'http://localhost:9000',
+        // target: 'https://kanbex.herokuapp.com',
         changeOrigin: true
       }
     }

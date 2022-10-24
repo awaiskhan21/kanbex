@@ -1,10 +1,9 @@
-import colors from 'tailwindcss/colors.js'
-import defaultTheme from 'tailwindcss/defaultTheme.js'
-import formsPlugin from '@tailwindcss/forms'
-import aspectRatio from '@tailwindcss/aspect-ratio'
-import typography from '@tailwindcss/typography'
-
+/* eslint-disable @typescript-eslint/no-var-requires */
 /** @type {import('tailwindcss').Config} */
+
+const colors = require('tailwindcss/colors')
+const defaultTheme = require('tailwindcss/defaultTheme')
+
 module.exports = {
   content: ['./*.html', './src/**/*.{js,ts,jsx,tsx,css}'],
   theme: {
@@ -17,5 +16,9 @@ module.exports = {
       sans: ['Inter', 'sans-serif', ...defaultTheme.fontFamily.sans]
     }
   },
-  plugins: [formsPlugin, aspectRatio, typography]
+  plugins: [
+    require('@tailwindcss/aspect-ratio'),
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/typography')
+  ]
 }
