@@ -6,7 +6,7 @@ import { SideBar } from '../Components/Common/SideBar'
 import Error404 from '../Components/ErrorPages/404'
 import { Boards, CreateBoard, ViewBoard } from '../Components/Board'
 import { CreateStage } from '../Components/Stage'
-import { CreateTask } from '../Components/Task'
+import { AllTask, CreateTask } from '../Components/Task'
 
 const routes = {
   '/': () => <Boards />,
@@ -39,7 +39,8 @@ const routes = {
     boardId: string
     stageId: string
     taskId: string
-  }) => <CreateTask boardId={boardId} stageId={stageId} taskId={taskId} />
+  }) => <CreateTask boardId={boardId} stageId={stageId} taskId={taskId} />,
+  '/tasks': () => <AllTask />
 }
 
 export default function AppRouter() {

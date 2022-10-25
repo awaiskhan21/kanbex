@@ -19,8 +19,8 @@ const menus = [
   },
   {
     icon: 'fas fa-history',
-    link: '/task',
-    title: 'Task'
+    link: '/tasks',
+    title: 'Tasks'
   }
 ]
 
@@ -159,7 +159,8 @@ export const SideBar: React.FC<SideBarProps> = ({ isOpen, setIsOpen }) => {
           <div className="flex w-10 shrink-0 items-center justify-center">
             <Link
               className="flex h-8 w-8 items-center justify-center rounded-full bg-white"
-              href="/user/profile"
+              href=""
+              // href="/user/profile"
             >
               <i className="fas fa-user block text-base text-zinc-900" />
             </Link>

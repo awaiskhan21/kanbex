@@ -1,33 +1,40 @@
 import React from 'react'
 import loadable from '@loadable/component'
 import { CircularProgress } from '@mui/material'
-import { Link, navigate, useQueryParams } from 'raviger'
+import { Link, useQueryParams } from 'raviger'
 import { useDispatch } from 'react-redux'
-import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import CancelIcon from '@mui/icons-material/Cancel'
 
-import { Board } from '../../types/task'
-import Button from '../Common/Button'
+import { Task } from '../../types/task'
 import { InputSearchBox } from '../Common/SearchBox'
 import { statusType, useAbortableEffect } from '../../Common/utils'
-import { getBoards } from '../../Redux/actions'
+import { getTasks } from '../../Redux/actions'
 import Pagination from '../Common/Pagination'
+import clsx from 'clsx'
 
 const Loading = loadable(() => import('../Common/Loading'))
 const PageTitle = loadable(() => import('../Common/PageTitle'))
 
 type Data = {
-  board: Board[]
+  task: Task[]
   count: number
 }
 
 const initData: Data = {
-  board: [],
+  task: [],
   count: 0
 }
 
-export const Boards = () => {
+const priorityColor = [
+  { text: 'Urgent', color: 'bg-black' },
+  { text: 'High', color: 'bg-rose-700' },
+  { text: 'Medium', color: 'bg-red-700' },
+  { text: 'Low', color: 'bg-sky-700' },
+  { text: 'Undefined', color: 'bg-gray-700' }
+]
+
+export const AllTask = () => {
   const dispatch: any = useDispatch()
   const [data, setData] = React.useState<Data>(initData)
   const [isLoading, setIsLoading] = React.useState(false)
@@ -43,15 +50,16 @@ export const Boards = () => {
       const params = {
         title: qParams.title || '',
         limit,
-        offset
+        offset,
+        completed: false
       }
 
-      const res = await dispatch(getBoards(params))
+      const res = await dispatch(getTasks(params))
 
       if (!status.aborted) {
         if (res && res.data) {
           setData({
-            board: res.data.results,
+            task: res.data.results,
             count: res.data.count
           })
         }
@@ -85,6 +93,19 @@ export const Boards = () => {
     })
   }
 
+  const priorityBadge = (number: number) => {
+    return (
+      <div
+        className={clsx(
+          'rounded-lg border border-zinc-600 bg-zinc-100 px-3 py-1 text-sm font-semibold text-white',
+          priorityColor[number].color
+        )}
+      >
+        {priorityColor[number].text || 'Undefined'}
+      </div>
+    )
+  }
+
   const badge = (key: string, value: string, paramKey: string) => {
     return (
       value && (
@@ -105,10 +126,10 @@ export const Boards = () => {
     setOffset(offset)
   }
 
-  let boards: React.ReactNode[] = []
+  let tasks: React.ReactNode[] = []
 
-  if (data.board && data.board.length) {
-    boards = data.board.map((b: Board, idx) => (
+  if (data.task && data.task.length) {
+    tasks = data.task.map((b: Task, idx) => (
       <div key={idx}>
         <div className="block h-full rounded-lg bg-white shadow hover:border-teal-500">
           <div className="flex h-full">
@@ -133,20 +154,10 @@ export const Boards = () => {
                     <div className="flex w-full flex-wrap justify-between gap-2">
                       <div />
                       <div className="flex gap-2 ">
-                        <Link
-                          className="inline-flex items-center rounded-md border border-teal-500 bg-white px-3 py-2 text-sm font-medium leading-4 text-teal-700 transition duration-150 ease-in-out hover:text-teal-500 hover:shadow focus:border-teal-300 focus:outline-none focus:ring-blue-300 active:bg-gray-50 active:text-teal-800"
-                          href={`/board/${b.id}`}
-                        >
-                          <DashboardIcon style={{ color: '#065f46' }} />
-                          Board
-                        </Link>
-                        <Link
-                          className=" inline-flex items-center rounded-md border border-teal-500 bg-white px-3 py-2 text-sm font-medium leading-4 text-teal-700 transition duration-150 ease-in-out hover:text-teal-500 hover:shadow focus:border-teal-300 focus:outline-none focus:ring-blue-300 active:bg-gray-50 active:text-teal-800"
-                          href="/tasks"
-                        >
-                          <PlaylistAddCheckIcon style={{ color: '#065f46' }} />
-                          Tasks
-                        </Link>
+                        <div className="inline-flex items-center rounded-md border border-teal-500 bg-white px-3 py-2 text-sm font-medium leading-4 text-teal-700 transition duration-150 ease-in-out hover:text-teal-500 hover:shadow focus:border-teal-300 focus:outline-none focus:ring-blue-300 active:bg-gray-50 active:text-teal-800">
+                          {b.due_date}
+                        </div>
+                        <div>{priorityBadge(b.priority || 4)}</div>
                       </div>
                     </div>
                   </div>
@@ -159,14 +170,14 @@ export const Boards = () => {
     ))
   }
 
-  let manageBoard: React.ReactNode = null
+  let manageTask: React.ReactNode = null
 
   if (isLoading || !data) {
-    manageBoard = <Loading />
-  } else if (data.board && data.board.length) {
-    manageBoard = (
+    manageTask = <Loading />
+  } else if (data.task && data.task.length) {
+    manageTask = (
       <>
-        <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-2">{boards}</div>
+        <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-2">{tasks}</div>
         {data.count > limit && (
           <div className="mt-4 flex w-full justify-center">
             <Pagination
@@ -179,11 +190,11 @@ export const Boards = () => {
         )}
       </>
     )
-  } else if (data.board && data.board.length === 0) {
-    manageBoard = (
+  } else if (data.task && data.task.length === 0) {
+    manageTask = (
       <div className="w-full rounded-lg p-3">
         <div className="mt-4 flex w-full  justify-center text-2xl font-bold text-gray-600">
-          No Boards
+          No Tasks
         </div>
       </div>
     )
@@ -191,12 +202,12 @@ export const Boards = () => {
 
   return (
     <div className="px-2 pb-2">
-      <PageTitle breadcrumbs={false} hideBack={true} title="Boards" />
+      <PageTitle breadcrumbs={false} hideBack={true} title="Pending Task" />
       <div className="mt-4 gap-2 lg:flex">
         <div className="min-w-fit flex-1 overflow-hidden rounded-lg bg-white shadow md:mr-2">
           <div className="px-4 py-5 sm:p-6">
             <dl>
-              <dt className="truncate text-sm font-medium leading-5 text-gray-500">Total Boards</dt>
+              <dt className="truncate text-sm font-medium leading-5 text-gray-500">Total Tasks</dt>
               {isLoading ? (
                 <dd className="mt-4 text-5xl leading-9">
                   <CircularProgress className="text-teal-500" />
@@ -213,23 +224,18 @@ export const Boards = () => {
           <div className="w-full md:w-72">
             <InputSearchBox
               errors=""
-              placeholder="Search Board"
+              placeholder="Search Task"
               search={onSearchSuspects}
               value={qParams.title}
             />
           </div>
-          <div className="mb-2 flex w-full items-start md:w-auto">
-            <Button variant="primary" onClick={() => navigate('/board/add')}>
-              <div className="text-xl">Create Board</div>
-            </Button>
-          </div>
         </div>
       </div>
       <div className="col-span-3 my-2 flex w-full flex-wrap items-center gap-2">
-        {badge('Board Name', qParams.title, 'title')}
+        {badge('Task Name', qParams.title, 'title')}
       </div>
       <div className="mt-4 pb-4">
-        <div>{manageBoard}</div>
+        <div>{manageTask}</div>
       </div>
     </div>
   )

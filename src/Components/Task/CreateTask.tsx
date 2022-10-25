@@ -1,24 +1,23 @@
 import type { statusType } from '../../Common/utils'
 
 import loadable from '@loadable/component'
-import { IconButton, InputLabel } from '@mui/material'
+import { IconButton } from '@mui/material'
 import { navigate } from 'raviger'
 import { useCallback, useReducer, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { Close } from '@mui/icons-material'
+import Close from '@mui/icons-material/Close'
 import moment from 'moment'
 
 import useWindowDimensions from '../../Common/hooks/useWindowDimensions'
 import { useAbortableEffect } from '../../Common/utils'
 import { createTask, updateTask, getTask } from '../../Redux/actions'
 import * as Notification from '../../Utils/Notification.js'
-import { goBack } from '../../Utils/utils'
-import TextInputField from '../Common/TextInputField'
 import Modal from '../Common/Modal'
 import { Task } from '../../types/task'
 import Button from '../Common/Button'
 import DateFormField from '../Common/Form/FormFields/DateFormField'
 import { FieldChangeEvent } from '../Common/Form/FormFields/Utils'
+import TextFormField from '../Common/Form/FormFields/TextFormField'
 import SelectMenu from '../Common/Form/FormFields/SelectMenu'
 import Switch from '../Common/Switch'
 
@@ -27,8 +26,8 @@ const Loading = loadable(() => import('../Common/Loading'))
 const initForm: Task = {
   title: '',
   description: '',
-  priority: 0,
-  due_date: '',
+  priority: 3,
+  due_date: moment().format('YYYY-MM-DD'),
   completed: false
 }
 
@@ -84,7 +83,10 @@ export const CreateTask = (props: CreateTaskProps) => {
         if (!status.aborted && res.data) {
           const formData = {
             title: res.data.title,
-            description: res.data.description
+            description: res.data.description,
+            priority: res.data.priority || 3,
+            completed: res.data.completed || false,
+            due_date: res.data.due_date || moment().format('YYYY-MM-DD')
           }
 
           dispatch({ form: formData, type: 'set_form' })
@@ -117,6 +119,16 @@ export const CreateTask = (props: CreateTaskProps) => {
     dispatch({
       form: {
         ...stateForm.form,
+        [event.name]: event.value.toISOString().split('T')[0]
+      },
+      type: 'set_form'
+    })
+  }
+
+  const handleFormFieldChange = (event: FieldChangeEvent<string>) => {
+    dispatch({
+      form: {
+        ...stateForm.form,
         [event.name]: event.value
       },
       type: 'set_form'
@@ -131,7 +143,6 @@ export const CreateTask = (props: CreateTaskProps) => {
       switch (field) {
         case 'title':
         case 'description':
-        case 'priority':
         case 'due_date':
           if (!stateForm.form[field]) {
             errors[field] = 'Field is required'
@@ -209,66 +220,66 @@ export const CreateTask = (props: CreateTaskProps) => {
             className="fill-current px-4 text-white md:hidden"
             onClick={() => navigate(`/board/${boardId}`)}
           >
-            <Close style={{ color: '#fff' }} />
+            <Close style={{ color: '#52525b' }} />
           </IconButton>
         </div>
         <form className="p-5" onSubmit={(e) => handleSubmit(e)}>
-          <div className="mb-4">
-            <InputLabel id="title-label">Title*</InputLabel>
-            <TextInputField
+          <div className="mb-2">
+            <TextFormField
               error={stateForm.errors.title}
               id="title"
+              label={<span className="text-sm">Title</span>}
               name="title"
-              placeholder=""
+              placeholder="Title"
               value={stateForm.form.title}
-              onChange={(e) => handleValueChange(e.target.value, 'title')}
+              onChange={handleFormFieldChange}
             />
           </div>
-          <div className="mb-4">
-            <InputLabel id="details-label">Description*</InputLabel>
-            <TextInputField
+          <div className="mb-2">
+            <TextFormField
               error={stateForm.errors.description}
               id="description"
+              label={<span className="text-sm">Description</span>}
               name="description"
-              placeholder=""
+              placeholder="Description"
               value={stateForm.form.description}
-              onChange={(e) => handleValueChange(e.target.value, 'description')}
+              onChange={handleFormFieldChange}
             />
           </div>
-          <div className="mb-4">
-            <InputLabel id="due_date-label">Due Date*</InputLabel>
+          <div className="mb-2">
             <DateFormField
-              error={stateForm.errors.due_date}
-              label="due_date"
+              // errorClassName="hidden"
+              label={<span className="text-sm">Due Date</span>}
               name="due_date"
               placeholder="Due Date"
-              value={
-                moment(stateForm.form.due_date, 'YYYY-MM-DD').toDate() ||
-                moment().format('YYYY-MM-DD')
-              }
+              position="LEFT"
+              value={moment(stateForm.form.due_date, 'YYYY-MM-DD').toDate()}
               onChange={handleDateRangeChange}
             />
           </div>
           <div className="mb-4">
-            <InputLabel id="details-label">Priority*</InputLabel>
+            <label className="field-label">
+              <span className="text-sm">Priority</span>
+            </label>
             <SelectMenu
+              optionIcon={() => <i className="fas fa-tasks" />}
               optionLabel={(o) => o.text}
               optionValue={(o) => o.id}
               options={[
                 {
-                  id: 1,
+                  id: 0,
                   text: 'Urgent'
                 },
                 {
-                  id: 2,
+                  id: 1,
                   text: 'High'
                 },
                 {
-                  id: 3,
+                  id: 2,
                   text: 'Medium'
                 },
                 {
-                  id: 4,
+                  id: 3,
                   text: 'Low'
                 }
               ]}
@@ -276,13 +287,16 @@ export const CreateTask = (props: CreateTaskProps) => {
               onChange={(e) => handleValueChange(e, 'priority')}
             />
           </div>
+
           <div className="mb-4">
-            <InputLabel id="completed-label">Completed*</InputLabel>
+            <label className="field-label">
+              <span className="text-sm">Completed</span>
+            </label>
             <Switch
               required
               className="col-span-6"
               error={stateForm.errors.completed}
-              label="completed"
+              label=""
               name="completed"
               optionLabel={(o) => (o ? 'True' : 'False')}
               options={[true, false]}
@@ -295,7 +309,7 @@ export const CreateTask = (props: CreateTaskProps) => {
               isExtremeSmallScreen ? ' grid grid-cols-1 ' : ' flex justify-between '
             } mt-6 gap-2 `}
           >
-            <Button variant="danger" onClick={() => goBack()}>
+            <Button variant="danger" onClick={() => navigate(`/board/${boardId}`)}>
               Cancel
             </Button>
             <Button variant="primary" onClick={(e) => handleSubmit(e)}>

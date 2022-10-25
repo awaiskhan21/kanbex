@@ -27,8 +27,8 @@ export default function SwitchV2<T>(props: SwitchProps<T>) {
           const selected = option === props.value
           const additionalClassNames = selected
             ? (props.optionClassName && props.optionClassName(option)) ||
-              'bg-primary-500 hover:bg-primary-600 text-white border-primary-500 focus:ring-primary-500 focus:border-primary-500'
-            : 'bg-gray-50 hover:bg-gray-200 border-gray-400 focus:ring-primary-500 focus:border-primary-500'
+              'bg-zinc-500 hover:bg-zinc-600 text-white border-zinc-500 focus:ring-zinc-500 focus:border-zinc-500'
+            : 'bg-gray-50 hover:bg-gray-200 border-gray-400 focus:ring-zinc-500 focus:border-zinc-500'
 
           return (
             <li

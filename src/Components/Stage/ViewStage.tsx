@@ -28,7 +28,7 @@ export const ViewStage = (props: ViewStageProps) => {
   })
   const [page, setPage] = React.useState(1)
 
-  const [limit, setLimit] = React.useState(0)
+  const [limit, setLimit] = React.useState(10)
 
   const fetchTask = React.useCallback(
     async (status: statusType) => {

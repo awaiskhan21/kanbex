@@ -1,7 +1,7 @@
 import type { statusType } from '../../Common/utils'
 
 import loadable from '@loadable/component'
-import { IconButton, InputLabel } from '@mui/material'
+import { IconButton } from '@mui/material'
 import { navigate } from 'raviger'
 import { useCallback, useReducer, useState } from 'react'
 import { useDispatch } from 'react-redux'
@@ -11,11 +11,11 @@ import useWindowDimensions from '../../Common/hooks/useWindowDimensions'
 import { useAbortableEffect } from '../../Common/utils'
 import { createBoard, updateBoard, getBoard } from '../../Redux/actions'
 import * as Notification from '../../Utils/Notification.js'
-import { goBack } from '../../Utils/utils'
-import TextInputField from '../Common/TextInputField'
 import Modal from '../Common/Modal'
 import { Board } from '../../types/task'
 import Button from '../Common/Button'
+import { FieldChangeEvent } from '../Common/Form/FormFields/Utils'
+import TextFormField from '../Common/Form/FormFields/TextFormField'
 
 const Loading = loadable(() => import('../Common/Loading'))
 
@@ -103,6 +103,16 @@ export const CreateBoard = (props: CreateBoardProps) => {
     })
   }
 
+  const handleFormFieldChange = (event: FieldChangeEvent<string>) => {
+    dispatch({
+      form: {
+        ...stateForm.form,
+        [event.name]: event.value
+      },
+      type: 'set_form'
+    })
+  }
+
   const validateForm = () => {
     const errors = { ...initError }
     let invalidForm = false
@@ -182,30 +192,30 @@ export const CreateBoard = (props: CreateBoardProps) => {
             className="fill-current px-4 text-white md:hidden"
             onClick={() => navigate('/boards')}
           >
-            <Close style={{ color: '#fff' }} />
+            <Close style={{ color: '#52525b' }} />
           </IconButton>
         </div>
         <form className="p-5" onSubmit={(e) => handleSubmit(e)}>
-          <div className="mb-4">
-            <InputLabel id="title-label">Title*</InputLabel>
-            <TextInputField
+          <div className="mb-2">
+            <TextFormField
               error={stateForm.errors.title}
               id="title"
+              label={<span className="text-sm">Title</span>}
               name="title"
-              placeholder=""
+              placeholder="Title"
               value={stateForm.form.title}
-              onChange={(e) => handleValueChange(e.target.value, 'title')}
+              onChange={handleFormFieldChange}
             />
           </div>
-          <div className="mb-4">
-            <InputLabel id="details-label">Description*</InputLabel>
-            <TextInputField
+          <div className="mb-2">
+            <TextFormField
               error={stateForm.errors.description}
               id="description"
+              label={<span className="text-sm">Description</span>}
               name="description"
-              placeholder=""
+              placeholder="Description"
               value={stateForm.form.description}
-              onChange={(e) => handleValueChange(e.target.value, 'description')}
+              onChange={handleFormFieldChange}
             />
           </div>
           <div

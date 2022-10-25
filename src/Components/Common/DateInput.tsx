@@ -160,7 +160,7 @@ const DateInput: React.FC<Props> = ({
           <DropdownTransition>
             <Popover.Panel
               className={clsx(
-                'absolute top-[110%] z-10 w-72 rounded-lg border border-slate-300 bg-white p-4 shadow',
+                'absolute top-[100%] z-10 w-64 rounded-lg border border-slate-300 bg-white p-4 shadow',
                 getPosition()
               )}
             >

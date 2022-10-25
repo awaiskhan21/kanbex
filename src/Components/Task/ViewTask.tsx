@@ -6,7 +6,6 @@ import DescriptionIcon from '@mui/icons-material/Description'
 import clsx from 'clsx'
 
 import { Task } from '../../types/task'
-import { Diversity1 } from '@mui/icons-material'
 
 type ViewTaskProps = {
   task: Task
@@ -27,7 +26,7 @@ export const ViewTask = (props: ViewTaskProps) => {
       <div
         className={clsx(
           'rounded-lg border border-zinc-600 bg-zinc-100 px-3 py-1 text-sm font-semibold text-white',
-          number > 4 ? 'bg-gray-900' : priorityColor[number].color
+          number > 3 ? 'bg-gray-900' : priorityColor[number].color
         )}
       >
         {priorityColor[number].text || 'Undefined'}
@@ -42,7 +41,13 @@ export const ViewTask = (props: ViewTaskProps) => {
           <div>
             <div className="flex justify-between">
               <div className="flex flex-row gap-2">
-                <h2 className="flex h-8 items-center text-sm font-bold">{task.title}</h2>
+                <h2 className="flex h-8 items-center text-sm">
+                  {task.completed ? (
+                    <s>{task.title}</s>
+                  ) : (
+                    <div className="font-bold">{task.title}</div>
+                  )}
+                </h2>
                 <Link href={`/board/${task.board}/stage/${task.stage}/task/${task.id}/update`}>
                   <EditIcon style={{ color: '#10b981' }} />
                 </Link>

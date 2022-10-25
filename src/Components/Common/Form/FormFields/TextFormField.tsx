@@ -10,8 +10,6 @@ type Props = FormFieldBaseProps<string> & {
   value?: string | number
   autoComplete?: string
   type?: 'email' | 'password' | 'search' | 'text'
-  // prefixIcon?: React.ReactNode;
-  // suffixIcon?: React.ReactNode;
 }
 
 const TextFormField = (props: Props) => {
