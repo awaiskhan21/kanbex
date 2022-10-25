@@ -1,8 +1,12 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "version": 2,
-  "github": {
-    "silent": true,
-    "enabled": false
-  }
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://kanbex.herokuapp.com/api/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
 }
