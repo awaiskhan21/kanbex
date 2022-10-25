@@ -56,18 +56,11 @@ export default defineConfig({
       ]
     }
   },
-  resolve: {
-    alias: [
-      { find: '@/', replacement: '/src' },
-      { find: '@/Assets', replacement: '/src/assets' }
-    ]
-  },
   server: {
     https: !!isHttps,
     proxy: {
       '/api/': {
-        target: 'http://localhost:9000',
-        // target: 'https://kanbex.herokuapp.com',
+        target: 'https://kanbex.herokuapp.com',
         changeOrigin: true
       }
     }
