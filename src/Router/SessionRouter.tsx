@@ -5,7 +5,7 @@ import { Login, Signup } from '../Components/Auth'
 const routes = {
   '/': () => <Login />,
   '/login': () => <Login />,
-  '/signup': () => <Signup />
+  '/register': () => <Signup />
 }
 
 const SessionRouter = () => {

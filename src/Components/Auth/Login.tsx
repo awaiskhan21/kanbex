@@ -160,7 +160,7 @@ export const Login = () => {
           <div className="mt-4 flex w-full items-center justify-center pb-4">
             <a
               className="text-sm text-zinc-800 underline underline-offset-4 hover:text-zinc-900"
-              href="/signup"
+              href="/register"
             >
               Don&apos;t have an account? Register
             </a>
