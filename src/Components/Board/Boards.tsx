@@ -3,8 +3,12 @@ import loadable from '@loadable/component'
 import { CircularProgress } from '@mui/material'
 import { Link, navigate, useQueryParams } from 'raviger'
 import { useDispatch } from 'react-redux'
-import { Board } from 'types/task'
+import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck'
+import DashboardIcon from '@mui/icons-material/Dashboard'
+import CancelIcon from '@mui/icons-material/Cancel'
 
+import { Board } from '../../types/task'
+import Button from '../Common/Button'
 import { InputSearchBox } from '../Common/SearchBox'
 import { statusType, useAbortableEffect } from '../../Common/utils'
 import { getBoards } from '../../Redux/actions'
@@ -74,24 +78,21 @@ export const Boards = () => {
     updateQuery({ title: value })
   }
 
-  const removeFilter = (paramKey: any) => {
+  const removeFilter = (paramKey: string) => {
     updateQuery({
       ...qParams,
       [paramKey]: ''
     })
   }
 
-  const badge = (key: string, value: any, paramKey: string) => {
+  const badge = (key: string, value: string, paramKey: string) => {
     return (
       value && (
         <span className="inline-flex h-full items-center rounded-full border bg-white px-3 py-1 text-xs font-medium leading-4 text-gray-600">
           {key}
           {': '}
           {value}
-          <i
-            className="fas fa-times ml-2 cursor-pointer rounded-full px-1 py-0.5 hover:bg-gray-500"
-            onClick={(_) => removeFilter(paramKey)}
-          />
+          <CancelIcon style={{ color: '#a1a1aa' }} onClick={(_) => removeFilter(paramKey)} />
         </span>
       )
     )
@@ -112,9 +113,9 @@ export const Boards = () => {
         <div className="block h-full rounded-lg bg-white shadow hover:border-teal-500">
           <div className="flex h-full">
             <div className="hidden w-1/4 shrink-0 items-center justify-center self-stretch bg-gray-300 md:flex">
-              <i className="fab fa-flipboard block text-4xl text-gray-200" />
+              <DashboardIcon style={{ color: '#737373' }} />
             </div>
-            <div className="h-full w-full grow">
+            <div className="h-full w-full grow px-2">
               <div className="flex h-full w-full flex-col justify-between">
                 <div className="w-full px-4 py-2 md:pl-2">
                   <div className="flow-root">
@@ -134,16 +135,16 @@ export const Boards = () => {
                       <div className="flex gap-2 ">
                         <Link
                           className="inline-flex items-center rounded-md border border-teal-500 bg-white px-3 py-2 text-sm font-medium leading-4 text-teal-700 transition duration-150 ease-in-out hover:text-teal-500 hover:shadow focus:border-teal-300 focus:outline-none focus:ring-blue-300 active:bg-gray-50 active:text-teal-800"
-                          href={`/boards/${b.id}`}
+                          href={`/board/${b.id}`}
                         >
-                          <i className="fas fa-hospital mr-2 text-teal-500" />
+                          <DashboardIcon style={{ color: '#065f46' }} />
                           Board
                         </Link>
                         <Link
                           className=" inline-flex items-center rounded-md border border-teal-500 bg-white px-3 py-2 text-sm font-medium leading-4 text-teal-700 transition duration-150 ease-in-out hover:text-teal-500 hover:shadow focus:border-teal-300 focus:outline-none focus:ring-blue-300 active:bg-gray-50 active:text-teal-800"
-                          href={`/boards/${b.id}/tasks`}
+                          href={`/board/${b.id}/tasks`}
                         >
-                          <i className="fas fa-user-injured mr-2 text-teal-500" />
+                          <PlaylistAddCheckIcon style={{ color: '#065f46' }} />
                           Tasks
                         </Link>
                       </div>
@@ -156,10 +157,6 @@ export const Boards = () => {
         </div>
       </div>
     ))
-  }
-
-  const hasFiltersApplied = (qParams: any) => {
-    return qParams.title
   }
 
   let manageBoard: React.ReactNode = null
@@ -183,20 +180,10 @@ export const Boards = () => {
       </>
     )
   } else if (data.board && data.board.length === 0) {
-    manageBoard = hasFiltersApplied(qParams) ? (
+    manageBoard = (
       <div className="w-full rounded-lg p-3">
         <div className="mt-4 flex w-full  justify-center text-2xl font-bold text-gray-600">
           No Boards
-        </div>
-      </div>
-    ) : (
-      <div>
-        <div
-          className="mt-4 cursor-pointer whitespace-nowrap rounded-md border border-gray-500 bg-white p-16 text-center text-sm font-semibold shadow hover:bg-gray-300"
-          onClick={() => navigate('/boards/create')}
-        >
-          <i className="fas fa-plus text-3xl" />
-          <div className="mt-2 text-xl">Create Board</div>
         </div>
       </div>
     )
@@ -210,7 +197,6 @@ export const Boards = () => {
           <div className="px-4 py-5 sm:p-6">
             <dl>
               <dt className="truncate text-sm font-medium leading-5 text-gray-500">Total Boards</dt>
-              {/* Show spinner until cound is fetched from server */}
               {isLoading ? (
                 <dd className="mt-4 text-5xl leading-9">
                   <CircularProgress className="text-teal-500" />
@@ -231,6 +217,11 @@ export const Boards = () => {
               search={onSearchSuspects}
               value={qParams.title}
             />
+          </div>
+          <div className="mb-2 flex w-full items-start md:w-auto">
+            <Button variant="primary" onClick={() => navigate('/board/add')}>
+              <div className="text-xl">Create Board</div>
+            </Button>
           </div>
         </div>
       </div>

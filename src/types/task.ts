@@ -11,6 +11,8 @@ export interface Board {
   title?: string
   description?: string
   created_by?: User
+  created_date?: string
+  modified_date?: string
 }
 
 export interface Stage extends Partial<Board> {

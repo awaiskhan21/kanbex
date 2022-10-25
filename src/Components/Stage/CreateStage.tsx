@@ -9,22 +9,22 @@ import { Close } from '@mui/icons-material'
 
 import useWindowDimensions from '../../Common/hooks/useWindowDimensions'
 import { useAbortableEffect } from '../../Common/utils'
-import { createBoard, updateBoard, getBoard } from '../../Redux/actions'
+import { createStage, updateStage, getStage } from '../../Redux/actions'
 import * as Notification from '../../Utils/Notification.js'
 import { goBack } from '../../Utils/utils'
 import TextInputField from '../Common/TextInputField'
 import Modal from '../Common/Modal'
-import { Board } from '../../types/task'
+import { Stage } from '../../types/task'
 import Button from '../Common/Button'
 
 const Loading = loadable(() => import('../Common/Loading'))
 
-const initForm: Board = {
+const initForm: Stage = {
   title: '',
   description: ''
 }
 
-const initError: Record<keyof Board, string> = Object.assign(
+const initError: Record<keyof Stage, string> = Object.assign(
   {},
   ...Object.keys(initForm).map((k) => ({ [k]: '' }))
 )
@@ -34,14 +34,14 @@ const initialState = {
   form: { ...initForm }
 }
 
-type SetFormAction = { type: 'set_form'; form: Board }
+type SetFormAction = { type: 'set_form'; form: Stage }
 type SetErrorAction = {
   type: 'set_error'
-  errors: Record<keyof Board, string>
+  errors: Record<keyof Stage, string>
 }
-type BoardCreateFormAction = SetFormAction | SetErrorAction
+type StageCreateFormAction = SetFormAction | SetErrorAction
 
-const activity_reducer = (state = initialState, action: BoardCreateFormAction) => {
+const activity_reducer = (state = initialState, action: StageCreateFormAction) => {
   switch (action.type) {
     case 'set_form':
       return { ...state, form: action.form }
@@ -50,26 +50,27 @@ const activity_reducer = (state = initialState, action: BoardCreateFormAction) =
   }
 }
 
-type CreateBoardProps = {
-  boardId?: string
+type CreateStageProps = {
+  boardId: string
+  stageId?: string
 }
 
-export const CreateBoard = (props: CreateBoardProps) => {
+export const CreateStage = (props: CreateStageProps) => {
   const dispatchAction: any = useDispatch()
-  const { boardId } = props
+  const { stageId, boardId } = props
   const [stateForm, dispatch] = useReducer(activity_reducer, initialState)
-  const [openBoard, setOpenBoard] = useState(true)
+  const [openStage, setOpenStage] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
   const { width } = useWindowDimensions()
 
-  const headerText = !boardId ? 'Create Board' : 'Update Board'
-  const buttonText = !boardId ? 'Save Board' : 'Update Board'
+  const headerText = !stageId ? 'Create Stage' : 'Update Stage'
+  const buttonText = !stageId ? 'Save Stage' : 'Update Stage'
 
   const fetchData = useCallback(
     async (status: statusType) => {
-      if (boardId) {
+      if (stageId) {
         setIsLoading(true)
-        const res = await dispatchAction(getBoard(boardId))
+        const res = await dispatchAction(getStage(stageId))
 
         if (!status.aborted && res.data) {
           const formData = {
@@ -79,17 +80,17 @@ export const CreateBoard = (props: CreateBoardProps) => {
 
           dispatch({ form: formData, type: 'set_form' })
         } else {
-          navigate(`/boards`)
+          navigate(`/board/${boardId}`)
         }
         setIsLoading(false)
       }
     },
-    [boardId, dispatchAction]
+    [stageId, dispatchAction, boardId]
   )
 
   useAbortableEffect(
     (status: statusType) => {
-      if (boardId) {
+      if (stageId) {
         fetchData(status)
       }
     },
@@ -139,22 +140,23 @@ export const CreateBoard = (props: CreateBoardProps) => {
       setIsLoading(true)
       const data = {
         title: stateForm.form.title,
-        description: stateForm.form.description
+        description: stateForm.form.description,
+        board: boardId
       }
-      const res = await dispatchAction(boardId ? updateBoard(data, boardId) : createBoard(data))
+      const res = await dispatchAction(stageId ? updateStage(data, stageId) : createStage(data))
 
       if (res && (res.status === 200 || res.status === 201) && res.data) {
         dispatch({ form: initForm, type: 'set_form' })
-        if (!boardId) {
+        if (!stageId) {
           Notification.Success({
-            msg: 'Board Created successfully'
+            msg: 'Stage Created successfully'
           })
         } else {
           Notification.Success({
-            msg: 'Board updated successfully'
+            msg: 'Stage updated successfully'
           })
         }
-        navigate('/board')
+        navigate(`/board/${boardId}`)
       } else {
         if (res?.data)
           Notification.Error({
@@ -173,14 +175,14 @@ export const CreateBoard = (props: CreateBoardProps) => {
   const isExtremeSmallScreen = width <= extremeSmallScreenBreakpoint ? true : false
 
   return (
-    <Modal closeCB={() => setOpenBoard(false)} isOpen={openBoard}>
+    <Modal closeCB={() => setOpenStage(false)} isOpen={openStage}>
       <div className="w-full max-w-lg divide-y divide-gray-200">
         <div className="flex justify-between">
           <h2 className="my-2 pl-5 text-2xl">{headerText}</h2>
           <IconButton
             aria-label="Close"
             className="fill-current px-4 text-white md:hidden"
-            onClick={() => navigate('/boards')}
+            onClick={() => navigate(`/board/${boardId}`)}
           >
             <Close style={{ color: '#fff' }} />
           </IconButton>
@@ -213,7 +215,7 @@ export const CreateBoard = (props: CreateBoardProps) => {
               isExtremeSmallScreen ? ' grid grid-cols-1 ' : ' flex justify-between '
             } mt-6 gap-2 `}
           >
-            <Button variant="danger" onClick={() => navigate(`/board/${boardId}`)}>
+            <Button variant="danger" onClick={() => goBack()}>
               Cancel
             </Button>
             <Button variant="primary" onClick={(e) => handleSubmit(e)}>

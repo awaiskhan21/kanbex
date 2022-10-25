@@ -72,7 +72,7 @@ const routes: Routes = {
 
   updateBoard: {
     method: 'PUT',
-    path: '/appi/v1/boards/{external_id}/'
+    path: '/api/v1/boards/{external_id}/'
   },
 
   deleteBoard: {
@@ -94,12 +94,12 @@ const routes: Routes = {
 
   getStage: {
     method: 'GET',
-    path: '/appi/v1/stages/{external_id}/'
+    path: '/api/v1/stages/{external_id}/'
   },
 
   updateStage: {
     method: 'PUT',
-    path: '/appi/v1/stages/{external_id}/'
+    path: '/api/v1/stages/{external_id}/'
   },
 
   deleteStage: {
@@ -126,7 +126,7 @@ const routes: Routes = {
 
   updateTask: {
     method: 'PUT',
-    path: '/appi/v1/tasks/{external_id}/'
+    path: '/api/v1/tasks/{external_id}/'
   },
 
   deleteTask: {

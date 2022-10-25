@@ -6,25 +6,33 @@ import { navigate } from 'raviger'
 import { useCallback, useReducer, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Close } from '@mui/icons-material'
+import moment from 'moment'
 
 import useWindowDimensions from '../../Common/hooks/useWindowDimensions'
 import { useAbortableEffect } from '../../Common/utils'
-import { createBoard, updateBoard, getBoard } from '../../Redux/actions'
+import { createTask, updateTask, getTask } from '../../Redux/actions'
 import * as Notification from '../../Utils/Notification.js'
 import { goBack } from '../../Utils/utils'
 import TextInputField from '../Common/TextInputField'
 import Modal from '../Common/Modal'
-import { Board } from '../../types/task'
+import { Task } from '../../types/task'
 import Button from '../Common/Button'
+import DateFormField from '../Common/Form/FormFields/DateFormField'
+import { FieldChangeEvent } from '../Common/Form/FormFields/Utils'
+import SelectMenu from '../Common/Form/FormFields/SelectMenu'
+import Switch from '../Common/Switch'
 
 const Loading = loadable(() => import('../Common/Loading'))
 
-const initForm: Board = {
+const initForm: Task = {
   title: '',
-  description: ''
+  description: '',
+  priority: 0,
+  due_date: '',
+  completed: false
 }
 
-const initError: Record<keyof Board, string> = Object.assign(
+const initError: Record<keyof Task, string> = Object.assign(
   {},
   ...Object.keys(initForm).map((k) => ({ [k]: '' }))
 )
@@ -34,14 +42,14 @@ const initialState = {
   form: { ...initForm }
 }
 
-type SetFormAction = { type: 'set_form'; form: Board }
+type SetFormAction = { type: 'set_form'; form: Task }
 type SetErrorAction = {
   type: 'set_error'
-  errors: Record<keyof Board, string>
+  errors: Record<keyof Task, string>
 }
-type BoardCreateFormAction = SetFormAction | SetErrorAction
+type TaskCreateFormAction = SetFormAction | SetErrorAction
 
-const activity_reducer = (state = initialState, action: BoardCreateFormAction) => {
+const activity_reducer = (state = initialState, action: TaskCreateFormAction) => {
   switch (action.type) {
     case 'set_form':
       return { ...state, form: action.form }
@@ -50,26 +58,28 @@ const activity_reducer = (state = initialState, action: BoardCreateFormAction) =
   }
 }
 
-type CreateBoardProps = {
-  boardId?: string
+type CreateTaskProps = {
+  boardId: string
+  stageId: string
+  taskId?: string
 }
 
-export const CreateBoard = (props: CreateBoardProps) => {
+export const CreateTask = (props: CreateTaskProps) => {
   const dispatchAction: any = useDispatch()
-  const { boardId } = props
+  const { taskId, stageId, boardId } = props
   const [stateForm, dispatch] = useReducer(activity_reducer, initialState)
-  const [openBoard, setOpenBoard] = useState(true)
+  const [openTask, setOpenTask] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
   const { width } = useWindowDimensions()
 
-  const headerText = !boardId ? 'Create Board' : 'Update Board'
-  const buttonText = !boardId ? 'Save Board' : 'Update Board'
+  const headerText = !taskId ? 'Create Task' : 'Update Task'
+  const buttonText = !taskId ? 'Save Task' : 'Update Task'
 
   const fetchData = useCallback(
     async (status: statusType) => {
-      if (boardId) {
+      if (taskId) {
         setIsLoading(true)
-        const res = await dispatchAction(getBoard(boardId))
+        const res = await dispatchAction(getTask(taskId))
 
         if (!status.aborted && res.data) {
           const formData = {
@@ -79,17 +89,17 @@ export const CreateBoard = (props: CreateBoardProps) => {
 
           dispatch({ form: formData, type: 'set_form' })
         } else {
-          navigate(`/boards`)
+          navigate(`/board/${boardId}`)
         }
         setIsLoading(false)
       }
     },
-    [boardId, dispatchAction]
+    [taskId, dispatchAction, boardId]
   )
 
   useAbortableEffect(
     (status: statusType) => {
-      if (boardId) {
+      if (taskId) {
         fetchData(status)
       }
     },
@@ -103,6 +113,16 @@ export const CreateBoard = (props: CreateBoardProps) => {
     })
   }
 
+  const handleDateRangeChange = (event: FieldChangeEvent<Date>) => {
+    dispatch({
+      form: {
+        ...stateForm.form,
+        [event.name]: event.value
+      },
+      type: 'set_form'
+    })
+  }
+
   const validateForm = () => {
     const errors = { ...initError }
     let invalidForm = false
@@ -111,6 +131,8 @@ export const CreateBoard = (props: CreateBoardProps) => {
       switch (field) {
         case 'title':
         case 'description':
+        case 'priority':
+        case 'due_date':
           if (!stateForm.form[field]) {
             errors[field] = 'Field is required'
             invalidForm = true
@@ -139,22 +161,27 @@ export const CreateBoard = (props: CreateBoardProps) => {
       setIsLoading(true)
       const data = {
         title: stateForm.form.title,
-        description: stateForm.form.description
+        description: stateForm.form.description,
+        priority: stateForm.form.priority,
+        due_date: stateForm.form.due_date,
+        completed: stateForm.form.completed,
+        board: boardId,
+        stage: stageId
       }
-      const res = await dispatchAction(boardId ? updateBoard(data, boardId) : createBoard(data))
+      const res = await dispatchAction(taskId ? updateTask(data, taskId) : createTask(data))
 
       if (res && (res.status === 200 || res.status === 201) && res.data) {
         dispatch({ form: initForm, type: 'set_form' })
-        if (!boardId) {
+        if (!taskId) {
           Notification.Success({
-            msg: 'Board Created successfully'
+            msg: 'Task Created successfully'
           })
         } else {
           Notification.Success({
-            msg: 'Board updated successfully'
+            msg: 'Task updated successfully'
           })
         }
-        navigate('/board')
+        navigate(`/board/${boardId}`)
       } else {
         if (res?.data)
           Notification.Error({
@@ -173,14 +200,14 @@ export const CreateBoard = (props: CreateBoardProps) => {
   const isExtremeSmallScreen = width <= extremeSmallScreenBreakpoint ? true : false
 
   return (
-    <Modal closeCB={() => setOpenBoard(false)} isOpen={openBoard}>
+    <Modal closeCB={() => setOpenTask(false)} isOpen={openTask}>
       <div className="w-full max-w-lg divide-y divide-gray-200">
         <div className="flex justify-between">
           <h2 className="my-2 pl-5 text-2xl">{headerText}</h2>
           <IconButton
             aria-label="Close"
             className="fill-current px-4 text-white md:hidden"
-            onClick={() => navigate('/boards')}
+            onClick={() => navigate(`/board/${boardId}`)}
           >
             <Close style={{ color: '#fff' }} />
           </IconButton>
@@ -208,12 +235,67 @@ export const CreateBoard = (props: CreateBoardProps) => {
               onChange={(e) => handleValueChange(e.target.value, 'description')}
             />
           </div>
+          <div className="mb-4">
+            <InputLabel id="due_date-label">Due Date*</InputLabel>
+            <DateFormField
+              error={stateForm.errors.due_date}
+              label="due_date"
+              name="due_date"
+              placeholder="Due Date"
+              value={
+                moment(stateForm.form.due_date, 'YYYY-MM-DD').toDate() ||
+                moment().format('YYYY-MM-DD')
+              }
+              onChange={handleDateRangeChange}
+            />
+          </div>
+          <div className="mb-4">
+            <InputLabel id="details-label">Priority*</InputLabel>
+            <SelectMenu
+              optionLabel={(o) => o.text}
+              optionValue={(o) => o.id}
+              options={[
+                {
+                  id: 1,
+                  text: 'Urgent'
+                },
+                {
+                  id: 2,
+                  text: 'High'
+                },
+                {
+                  id: 3,
+                  text: 'Medium'
+                },
+                {
+                  id: 4,
+                  text: 'Low'
+                }
+              ]}
+              value={stateForm.form.priority}
+              onChange={(e) => handleValueChange(e, 'priority')}
+            />
+          </div>
+          <div className="mb-4">
+            <InputLabel id="completed-label">Completed*</InputLabel>
+            <Switch
+              required
+              className="col-span-6"
+              error={stateForm.errors.completed}
+              label="completed"
+              name="completed"
+              optionLabel={(o) => (o ? 'True' : 'False')}
+              options={[true, false]}
+              value={stateForm.form.completed}
+              onChange={(e) => handleValueChange(e, 'completed')}
+            />
+          </div>
           <div
             className={`${
               isExtremeSmallScreen ? ' grid grid-cols-1 ' : ' flex justify-between '
             } mt-6 gap-2 `}
           >
-            <Button variant="danger" onClick={() => navigate(`/board/${boardId}`)}>
+            <Button variant="danger" onClick={() => goBack()}>
               Cancel
             </Button>
             <Button variant="primary" onClick={(e) => handleSubmit(e)}>

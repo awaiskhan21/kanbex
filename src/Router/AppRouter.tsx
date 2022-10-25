@@ -1,19 +1,45 @@
 import { useRedirect, useRoutes } from 'raviger'
 import { useState } from 'react'
 
+import kanbex from '../assets/images/kanbex.png'
 import { SideBar } from '../Components/Common/SideBar'
 import Error404 from '../Components/ErrorPages/404'
-import { Boards } from '../Components/Board/Boards'
-import { CreateBoard } from '../Components/Board/CreateBoard'
-import { ViewBoard } from '../Components/Board/ViewBoard'
-import kanbex from '../assets/images/kanbex.png'
+import { Boards, CreateBoard, ViewBoard } from '../Components/Board'
+import { CreateStage } from '../Components/Stage'
+import { CreateTask } from '../Components/Task'
 
 const routes = {
   '/': () => <Boards />,
   '/board': () => <Boards />,
   '/board/add': () => <CreateBoard />,
-  '/board/:boardId/update': ({ boardId }: any) => <CreateBoard boardId={boardId} />,
-  '/board/:boardId/view': ({ boardId }: any) => <ViewBoard boardId={boardId} />
+  '/board/:boardId/update': ({ boardId }: { boardId: string }) => <CreateBoard boardId={boardId} />,
+  '/board/:boardId': ({ boardId }: { boardId: string }) => <ViewBoard boardId={boardId} />,
+  '/board/:boardId/stage/add': ({ boardId }: { boardId: string }) => (
+    <CreateStage boardId={boardId} />
+  ),
+  '/board/:boardId/stage/:stageId/update': ({
+    boardId,
+    stageId
+  }: {
+    boardId: string
+    stageId: string
+  }) => <CreateStage boardId={boardId} stageId={stageId} />,
+  '/board/:boardId/stage/:stageId/task/add': ({
+    boardId,
+    stageId
+  }: {
+    boardId: string
+    stageId: string
+  }) => <CreateTask boardId={boardId} stageId={stageId} />,
+  '/board/:boardId/stage/:stageId/task/:taskId/update': ({
+    boardId,
+    stageId,
+    taskId
+  }: {
+    boardId: string
+    stageId: string
+    taskId: string
+  }) => <CreateTask boardId={boardId} stageId={stageId} taskId={taskId} />
 }
 
 export default function AppRouter() {

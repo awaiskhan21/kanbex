@@ -1,4 +1,4 @@
-import DateInputV2, { DatePickerPosition } from '../../DateInput'
+import DateInput, { DatePickerPosition } from '../../DateInput'
 
 import FormField from './FormField'
 import {
@@ -23,7 +23,7 @@ const DateFormField = ({ position = 'CENTER', ...props }: Props) => {
 
   return (
     <FormField props={props}>
-      <DateInputV2
+      <DateInput
         className={`${bgColor} ${borderColor}`}
         disabled={props.disabled}
         placeholder={props.placeholder}
