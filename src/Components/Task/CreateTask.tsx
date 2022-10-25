@@ -119,7 +119,7 @@ export const CreateTask = (props: CreateTaskProps) => {
     dispatch({
       form: {
         ...stateForm.form,
-        [event.name]: event.value.toISOString().split('T')[0]
+        [event.name]: moment(event.value).format('YYYY-MM-DD')
       },
       type: 'set_form'
     })

@@ -96,13 +96,6 @@ export const CreateBoard = (props: CreateBoardProps) => {
     [dispatch, fetchData]
   )
 
-  const handleValueChange = (value: any, field: string) => {
-    dispatch({
-      form: { ...stateForm.form, [field]: value },
-      type: 'set_form'
-    })
-  }
-
   const handleFormFieldChange = (event: FieldChangeEvent<string>) => {
     dispatch({
       form: {
@@ -159,12 +152,13 @@ export const CreateBoard = (props: CreateBoardProps) => {
           Notification.Success({
             msg: 'Board Created successfully'
           })
+          navigate('/board')
         } else {
           Notification.Success({
             msg: 'Board updated successfully'
           })
+          navigate(`/board/${boardId}`)
         }
-        navigate('/board')
       } else {
         if (res?.data)
           Notification.Error({

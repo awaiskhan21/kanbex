@@ -1,5 +1,5 @@
 export interface User {
-  id?: number
+  id?: string
   username?: string
   email?: string
   first_name?: string
@@ -7,7 +7,7 @@ export interface User {
 }
 
 export interface Board {
-  id?: number
+  id?: string
   title?: string
   description?: string
   created_by?: User

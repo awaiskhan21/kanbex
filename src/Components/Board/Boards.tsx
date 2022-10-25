@@ -142,7 +142,7 @@ export const Boards = () => {
                         </Link>
                         <Link
                           className=" inline-flex items-center rounded-md border border-teal-500 bg-white px-3 py-2 text-sm font-medium leading-4 text-teal-700 transition duration-150 ease-in-out hover:text-teal-500 hover:shadow focus:border-teal-300 focus:outline-none focus:ring-blue-300 active:bg-gray-50 active:text-teal-800"
-                          href="/tasks"
+                          href={`/tasks?board=${b.id}`}
                         >
                           <PlaylistAddCheckIcon style={{ color: '#065f46' }} />
                           Tasks

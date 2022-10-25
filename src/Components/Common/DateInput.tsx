@@ -148,7 +148,7 @@ const DateInput: React.FC<Props> = ({
             <input name="date" type="hidden" />
             <input
               readOnly
-              className={clsx('form-input', className)}
+              className={`form-input ${className}`}
               placeholder={placeholder ? placeholder : 'Select date'}
               type="text"
               value={value && format(value, 'yyyy-MM-dd')}
@@ -160,7 +160,7 @@ const DateInput: React.FC<Props> = ({
           <DropdownTransition>
             <Popover.Panel
               className={clsx(
-                'absolute top-[100%] z-10 w-64 rounded-lg border border-slate-300 bg-white p-4 shadow',
+                'absolute top-[110%] z-10 w-72 rounded-lg border border-slate-300 bg-white p-4 shadow',
                 getPosition()
               )}
             >
@@ -221,7 +221,7 @@ const DateInput: React.FC<Props> = ({
                         <div
                           className={clsx(
                             'flex h-full cursor-pointer items-center justify-center rounded text-center text-sm leading-loose text-slate-900 transition duration-100 ease-in-out hover:bg-slate-200',
-                            value && isSelectedDate(d) && 'bg-zinc-500 font-bold text-slate-100'
+                            value && isSelectedDate(d) && 'bg-gray-500 font-bold text-slate-100'
                           )}
                           onClick={setDateValue(d)}
                         >
@@ -242,8 +242,8 @@ const DateInput: React.FC<Props> = ({
                         className={clsx(
                           'w-1/4 cursor-pointer rounded-lg py-4 px-2 text-center text-sm font-semibold hover:bg-slate-200',
                           value && isSelectedMonth(i)
-                            ? 'bg-zinc-500 text-white'
-                            : 'text-slate-700 hover:bg-zinc-600'
+                            ? 'bg-gray-500 text-white'
+                            : 'text-slate-700 hover:bg-gray-600'
                         )}
                         onClick={setMonthValue(i)}
                       >
@@ -272,8 +272,8 @@ const DateInput: React.FC<Props> = ({
                           className={clsx(
                             'w-1/4 cursor-pointer rounded-lg py-4 px-2 text-center text-sm font-semibold hover:bg-slate-200',
                             value && isSelectedYear(y)
-                              ? 'bg-zinc-500 text-white'
-                              : 'text-slate-700 hover:bg-zinc-600'
+                              ? 'bg-gray-500 text-white'
+                              : 'text-slate-700 hover:bg-gray-600'
                           )}
                           onClick={setYearValue(y)}
                         >

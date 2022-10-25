@@ -136,11 +136,11 @@ export const ViewBoard = (props: ViewBoardProps) => {
                 <div className="flex flex-row gap-2">
                   <h1 className="text-4xl font-bold">{boardData.title}</h1>
                   <Link href={`/board/${boardData.id}/update`}>
-                    <EditIcon style={{ color: '#10b981' }} />
+                    <EditIcon style={{ color: '#10b981', marginTop: '8px' }} />
                   </Link>
-                  <Link href={`/board/${boardData.id}/delete`}>
+                  <button onClick={() => setOpenDeleteDialog(true)}>
                     <DeleteForeverIcon style={{ color: '#dc2626' }} />
-                  </Link>
+                  </button>
                 </div>
                 <p className="mt-1 text-sm text-gray-700">
                   Last updated{' '}

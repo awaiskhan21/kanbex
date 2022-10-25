@@ -51,6 +51,7 @@ export const AllTask = () => {
         title: qParams.title || '',
         limit,
         offset,
+        board: qParams.board || '',
         completed: false
       }
 
@@ -66,7 +67,7 @@ export const AllTask = () => {
         setIsLoading(false)
       }
     },
-    [dispatch, qParams.title, offset]
+    [qParams.title, qParams.board, offset, dispatch]
   )
 
   useAbortableEffect(
@@ -202,12 +203,12 @@ export const AllTask = () => {
 
   return (
     <div className="px-2 pb-2">
-      <PageTitle breadcrumbs={false} hideBack={true} title="Pending Task" />
+      <PageTitle breadcrumbs={false} title="Tasks" />
       <div className="mt-4 gap-2 lg:flex">
         <div className="min-w-fit flex-1 overflow-hidden rounded-lg bg-white shadow md:mr-2">
           <div className="px-4 py-5 sm:p-6">
             <dl>
-              <dt className="truncate text-sm font-medium leading-5 text-gray-500">Total Tasks</dt>
+              <dt className="truncate text-sm font-medium leading-5 text-gray-500">Pendng Tasks</dt>
               {isLoading ? (
                 <dd className="mt-4 text-5xl leading-9">
                   <CircularProgress className="text-teal-500" />

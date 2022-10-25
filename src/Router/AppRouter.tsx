@@ -44,7 +44,7 @@ const routes = {
 }
 
 export default function AppRouter() {
-  useRedirect('/', '/boards')
+  useRedirect('/', '/board')
   useRedirect('/user', '/users')
   const pages = useRoutes(routes) || <Error404 />
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
