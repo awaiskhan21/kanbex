@@ -8,14 +8,13 @@ import { useSelector } from 'react-redux'
 
 import { PREFERENCE_SIDEBAR_KEY, SIDEBAR } from '../../Common/constants'
 import useWindowDimensions from '../../Common/hooks/useWindowDimensions'
-
-import logo from '@/Assets/images/logo.jpg'
-import kanbex from '@/Assets/images/kanbex.png'
+import logo from '../../assets/images/logo.jpg'
+import kanbex from '../../assets/images/kanbex.png'
 
 const menus = [
   {
     icon: 'fab fa-flipboard',
-    link: '/boards',
+    link: '/board',
     title: 'Boards'
   },
   {

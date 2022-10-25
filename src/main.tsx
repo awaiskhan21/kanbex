@@ -7,7 +7,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import { Provider } from 'react-redux'
 
 import reducer from './Redux/Reducer'
-import App from './Components/App'
+import App from './App'
 
 const store = configureStore({ reducer })
 

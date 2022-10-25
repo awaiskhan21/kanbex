@@ -1,7 +1,7 @@
+import React from 'react'
 import loadable from '@loadable/component'
 import { CircularProgress } from '@mui/material'
 import { Link, navigate, useQueryParams } from 'raviger'
-import React from 'react'
 import { useDispatch } from 'react-redux'
 import { Board } from 'types/task'
 

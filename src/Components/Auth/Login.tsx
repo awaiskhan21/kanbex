@@ -9,8 +9,7 @@ import { useDispatch } from 'react-redux'
 import { postLogin } from '../../Redux/actions'
 import TextFormField from '../Common/Form/FormFields/TextFormField'
 import { FieldChangeEventHandler } from '../Common/Form/FormFields/Utils'
-
-import kanbex from '@/Assets/images/kanbex.png'
+import kanbex from '../../assets/images/kanbex.png'
 
 export const Login = () => {
   const dispatch: any = useDispatch()
@@ -81,7 +80,7 @@ export const Login = () => {
             localStorage.setItem('kanbex_refresh_token', res.refresh)
 
             if (window.location.pathname === '/' || window.location.pathname === '/login') {
-              navigate('/boards')
+              navigate('/board')
             } else {
               navigate(window.location.pathname.toString())
             }

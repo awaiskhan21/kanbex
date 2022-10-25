@@ -1,16 +1,16 @@
-import type { statusType } from '../Common/utils'
+import type { statusType } from './Common/utils'
 
 import loadable from '@loadable/component'
 import axios from 'axios'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { useAbortableEffect } from '../Common/utils'
-import { getCurrentUser } from '../Redux/actions'
-import AppRouter from '../Router/AppRouter'
-import SessionRouter from '../Router/SessionRouter'
+import { useAbortableEffect } from './Common/utils'
+import { getCurrentUser } from './Redux/actions'
+import AppRouter from './Router/AppRouter'
+import SessionRouter from './Router/SessionRouter'
 
-const Loading = loadable(() => import('./Common/Loading'))
+const Loading = loadable(() => import('./Components/Common/Loading'))
 
 const App = () => {
   const dispatch: any = useDispatch()

@@ -10,8 +10,7 @@ import * as Notification from '../../Utils/Notification.js'
 import { signupUser } from '../../Redux/actions'
 import TextFormField from '../Common/Form/FormFields/TextFormField'
 import { FieldChangeEventHandler } from '../Common/Form/FormFields/Utils'
-
-import kanbex from '@/Assets/images/kanbex.png'
+import kanbex from '../../assets/images/kanbex.png'
 
 export const Signup = () => {
   const dispatch: any = useDispatch()

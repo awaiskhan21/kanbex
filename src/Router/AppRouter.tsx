@@ -3,13 +3,17 @@ import { useState } from 'react'
 
 import { SideBar } from '../Components/Common/SideBar'
 import Error404 from '../Components/ErrorPages/404'
-import { Boards } from '../Components/Board'
-
-import kanbex from '@/Assets/images/kanbex.png'
+import { Boards } from '../Components/Board/Boards'
+import { CreateBoard } from '../Components/Board/CreateBoard'
+import { ViewBoard } from '../Components/Board/ViewBoard'
+import kanbex from '../assets/images/kanbex.png'
 
 const routes = {
   '/': () => <Boards />,
-  '/boards': () => <Boards />
+  '/board': () => <Boards />,
+  '/board/add': () => <CreateBoard />,
+  '/board/:boardId/update': ({ boardId }: any) => <CreateBoard boardId={boardId} />,
+  '/board/:boardId/view': ({ boardId }: any) => <ViewBoard boardId={boardId} />
 }
 
 export default function AppRouter() {

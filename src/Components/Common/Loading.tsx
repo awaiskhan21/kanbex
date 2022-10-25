@@ -1,6 +1,6 @@
 import { Grid } from '@mui/material'
 
-import kanbex from '@/Assets/images/kanbex.png'
+import kanbex from '../../assets/images/kanbex.png'
 
 const Loading = () => {
   return (
