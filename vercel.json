@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://kanbex.herokuapp.com/api/$1"
+      "destination": "https://kanbex.azurewebsites.net/api/$1"
     },
     {
       "source": "/(.*)",
