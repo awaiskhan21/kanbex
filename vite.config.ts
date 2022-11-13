@@ -60,7 +60,7 @@ export default defineConfig({
     https: !!isHttps,
     proxy: {
       '/api/': {
-        target: 'https://kanbex.herokuapp.com',
+        target: 'https://kanbex.azurewebsites.net',
         changeOrigin: true
       }
     }
